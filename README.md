@@ -18,7 +18,7 @@ After completing this tutorial, you'll know how to do the following:
    * __Use JavaScript/Node.js and the Alexa Skills Kit to create a skill__ - You will use the template as a guide but the customization is up to you. For more background information on using the Alexa Skills Kit please [watch this video](https://goto.webcasts.com/starthere.jsp?ei=1087595).
    * __[Manage state](https://github.com/alexa/alexa-skills-kit-sdk-for-nodejs#making-skill-state-management-simpler) in an Alexa skill__ - Depending on the user's choices, we can handle intents differently.
    * __Get your skill published__ - Once you have completed your skill, this tutorial will guide you through testing your skill and sending your skill through the certification process so it can be enabled by any Alexa user.  [You may even be eligible for some Alexa swag!](https://developer.amazon.com/alexa-skills-kit/alexa-developer-skill-promotion)
-
+   * __Interact with the Bing Search API__.
 
 Get started and build your first - or next - Alexa skill today.
 
@@ -54,7 +54,7 @@ Skills are managed through the Amazon Developer Portal. You’ll link the Lambda
    
     ![](https://images-na.ssl-images-amazon.com/images/G/01/mobile-apps/dex/alexa/alexa-skills-kit/tutorials/general/intent-schema._TTH_.png)
  
-6.  Review the Intent Schema below. This is written in JSON and provides the information needed to map the intents we want to handle programmatically.  Copy this from the intent schema in the [GitHub repository here](https://github.com/alexa/skill-sample-nodejs-city-guide/blob/master/speechAssets/intentSchema.json).
+6.  Review the Intent Schema below. This is written in JSON and provides the information needed to map the intents we want to handle programmatically.  Copy this from the intent schema in the [GitHub repository here](https://github.com/alexa/skill-sample-nodejs-city-guide/blob/master/speechAssets/intents.json).
     
     Below you will see a collection of intents that we expect our users to indicate by voice.  They can ask for an overview of your city, they can ask about the Top Five attractions (in addition to asking for more information about those attractions), and they can ask for the news for your city. Intents can optionally have arguments called slots.
     
@@ -63,24 +63,22 @@ Skills are managed through the Amazon Developer Portal. You’ll link the Lambda
     For the getMoreInfoIntent, the user will be providing a number, like "Tell me about attraction number one." [For more on the use of built-in intents, go here](https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/implementing-the-built-in-intents).
 
     ```JSON
-    {
-      "intents": [
-        { "intent": "getOverview", "slots": [] },
-        { "intent": "getTopFiveIntent", "slots": [] },
-        { "intent": "getAttractionIntent", "slots": [] },
-        { "intent": "getMoreInfoIntent", "slots": [{ "name": "attraction", "type": "AMAZON.NUMBER" }] },
-        { "intent": "getNewsIntent", "slots": [] },
-        { "intent": "AMAZON.YesIntent", "slots": [] },
-        { "intent": "AMAZON.NoIntent", "slots": [] },
-        { "intent": "AMAZON.HelpIntent", "slots": [] },
-        { "intent": "AMAZON.StopIntent", "slots": [] },
-        { "intent": "AMAZON.CancelIntent", "slots": [] },
+    {  
+      "intents": [  
+        { "intent": "getOverview", "slots": [] },  
+        { "intent": "getTopFiveIntent", "slots": [] },  
+        { "intent": "getAttractionIntent", "slots": [] },  
+        { "intent": "getMoreInfoIntent", "slots": [{ "name": "attraction", "type": "AMAZON.NUMBER" }] },  
+        { "intent": "getNewsIntent", "slots": [] },  
+        { "intent": "AMAZON.YesIntent", "slots": [] },  
+        { "intent": "AMAZON.NoIntent", "slots": [] },  
+        { "intent": "AMAZON.HelpIntent", "slots": [] },  
         { "intent": "AMAZON.RepeatIntent", "slots": [] }
-      ]
+      ]  
     }
     ```
     
-    You can see that we have defined a set of standard built-in intents: Yes, No, Help, Stop, Cancel, and Repeat.  These are built-in intents that we can use for common commands our users will indicate.
+    You can see that we have defined four different built-in intents: Yes, No, Help, and Repeat.  These are built-in intents that we can use for common commands our users will indicate.  
 
 7.  The next step is to build the utterance list.  This is meant to be a thorough, well-thought-out list of the ways users will try to interact with your skill.  You don't have to get every possible phrase, but it is important to cover a variety of utterances so that the Natural Language Understanding(NLU) engine can best interpret your user's intent.
 
@@ -91,42 +89,26 @@ Skills are managed through the Amazon Developer Portal. You’ll link the Lambda
     Now it is time to add the Utterances. Copy/paste the sample utterances from [GitHub](https://github.com/alexa/skill-sample-nodejs-city-guide/blob/master/speechAssets/SampleUtterances.txt). An example of utterances is listed below.
 
     ```
-        getOverview more information about seattle
-        getOverview what's it like in seattle
-        getOverview tell me some facts about seattle
-        getOverview facts about seattle
-        getOverview overview of seattle
-        getOverview seattle facts
-        getOverview seattle overview
+    getOverview tell me about Seattle
 
-        getTopFiveIntent tell me the top five things
-        getTopFiveIntent top five things to do
-        getTopFiveIntent give me the top five
-        getTopFiveIntent the top five
-        getTopFiveIntent top five
-        getTopFiveIntent the top five things to do
+    getTopFiveIntent tell me top five things to do
+    getTopFiveIntent what are the top five things to do
+    getTopFiveIntent what I should see
 
-        getAttractionIntent tell me a good attraction
-        getAttractionIntent where should I go
-        getAttractionIntent an attraction
-        getAttractionIntent attractions
+    getAttractionIntent tell me what to do
+    getAttractionIntent give me an attraction
 
-        getMoreInfoIntent open number {attraction}
-        getMoreInfoIntent number {attraction}
-        getMoreInfoIntent {attraction}
+    getMoreInfoIntent tell me more about {attraction}
+    getMoreInfoIntent open attraction {attraction}
+    getMoreInfoIntent open number {attraction}
 
-        getNewsIntent tell me the local news
-        getNewsIntent what is the latest news
-        getNewsIntent the local news
-        getNewsIntent the latest news
-        getNewsIntent the news
-        getNewsIntent news
-        getNewsIntent local news
+    getNewsIntent get me the news
+    getNewsIntent tell me the news
     ```
     
     As you can see in the example above, we are using our custom intents with phrases that our users might use to interact with our skill.  Each example is a different way that a user might ask for that intent.  getMoreInfoIntent expects an AMAZON.NUMBER slot, so we have specified this in our utterances with {attraction}.  ([More information on slots can be found here.](https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/alexa-skills-kit-interaction-model-reference#slot-types))
 
-9.  Select **Save**. You should see the interaction model being built (this might take a minute or two). If you select Next, your changes will be saved and you will go directly to the Configuration screen. After selecting Save, it should now look similar to this:
+9.  Select **Save**. You should see the interaction model being built (this might take a minute or two). If you select Next, your changes will be saved and you will go directly to the Configuration screen. After selecting Save, it should now look like this:
 
     ![](https://images-na.ssl-images-amazon.com/images/G/01/mobile-apps/dex/alexa/alexa-skills-kit/tutorials/city-guide/interaction-model._TTH_.png)
 
@@ -162,7 +144,7 @@ To make the development of skills easier, we have created the ASK SDK for Node.j
     
  **Note: If you already have an AWS account, you can skip this section.  Just sign in to your console.**
 
-1.  Open [aws.amazon.com](https://aws.amazon.com) and then choose **‘Create an AWS Account’**
+1.  Open [aws.amazon.com](aws.amazon.com) and then choose **‘Create an AWS Account’**
 
     1. Follow the online instructions. Do not worry about the IAM role, we will do that later.
     2. You will need a Valid Credit Card to set up your account (note the AWS Free Tier will suffice however. [You can find out more about the free tier here](https://aws.amazon.com/free/?sc_ichannel=ha&amp;sc_ipage=signin&amp;sc_iplace=body_link_text&amp;sc_icampaigntype=free_tier&amp;sc_icampaign=ha_en_free_tier_signin_2014_03).)
