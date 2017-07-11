@@ -98,7 +98,7 @@ var newSessionHandlers = {
 var startSearchHandlers = Alexa.CreateStateHandler(states.SEARCHMODE, {
     'getOverview': function () {
         output = locationOverview;
-        this.emit(':askWithCard', output, location, locationOverview);
+        this.emit(':tellWithCard', output, location, locationOverview);
     },
     'getAttractionIntent': function () {
         var cardTitle = location;
