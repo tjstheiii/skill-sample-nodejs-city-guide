@@ -6,7 +6,7 @@ var states = {
     TOPFIVE: '_TOPFIVE',
 };
 
-var location = "Rock_Island";
+var location = "RockIsland";
 
 var numberOfResults = 3;
 
