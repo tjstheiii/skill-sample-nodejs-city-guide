@@ -270,7 +270,7 @@ function httpGet(query, callback) {
   console.log("/n QUERY: "+query);
 
     var options = {
-      //http://api.nytimes.com/svc/search/v2/articlesearch.json?q=Rock+Island&sort=newest&api-key=
+      //http://api.nytimes.com/svc/search/v2/articlesearch.json?q=Rock%20Island%20illinois&sort=newest&api-key=
         host: 'api.nytimes.com',
         path: '/svc/search/v2/articlesearch.json?q=' + query + '&sort=newest&api-key=' + APIKey,
         method: 'GET'
