@@ -73,7 +73,6 @@ var newSessionHandlers = {
     'getOverview': function () {
         this.handler.state = states.SEARCHMODE;
         this.emitWithState('getOverview');
-		this.emit(':ask', output, welcomeRepromt);
     },
     'getNewsIntent': function () {
         this.handler.state = states.SEARCHMODE;
@@ -107,8 +106,7 @@ var newSessionHandlers = {
 var startSearchHandlers = Alexa.CreateStateHandler(states.SEARCHMODE, {
     'getOverview': function () {
         output = locationOverview;
-        this.emit(':tellWithCard', output, output, locationOverview);
-		this.emit(':ask', output, welcomeRepromt);
+        this.emit(':askWithCard', output, output, locationOverview);
     },
     'getAttractionIntent': function () {
         var cardTitle = location;
@@ -214,7 +212,6 @@ var topFiveHandlers = Alexa.CreateStateHandler(states.TOPFIVE, {
     'getOverview': function () {
         this.handler.state = states.SEARCHMODE;
         this.emitWithState('getOverview');
-		this.emit(':ask', output, welcomeRepromt);
     },
     'getTopFiveIntent': function () {
         this.handler.state = states.SEARCHMODE;
