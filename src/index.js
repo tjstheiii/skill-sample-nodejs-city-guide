@@ -73,6 +73,7 @@ var newSessionHandlers = {
     'getOverview': function () {
         this.handler.state = states.SEARCHMODE;
         this.emitWithState('getOverview');
+		this.emit(':ask', output, welcomeRepromt);
     },
     'getNewsIntent': function () {
         this.handler.state = states.SEARCHMODE;
@@ -106,7 +107,7 @@ var newSessionHandlers = {
 var startSearchHandlers = Alexa.CreateStateHandler(states.SEARCHMODE, {
     'getOverview': function () {
         output = locationOverview;
-        this.emit(':tellWithCard', output, output, locationOverview);
+        this.emit(':tellWithCard', output, location, locationOverview);
     },
     'getAttractionIntent': function () {
         var cardTitle = location;
