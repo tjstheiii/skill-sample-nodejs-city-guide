@@ -16,7 +16,9 @@ var welcomeMessage = location + " Guide. You can ask me for an attraction, the l
 
 var welcomeRepromt = "You can ask me for an attraction, the local news, or  say help. What will it be?";
 
-var locationOverview = "Rock Island is a great city and hosts many great rap bands, mainly Town Business with their hit song A Nite In Rock Island. With an estimated 38,210 residents as of 2016, Rock Island is not the largest city in the Quad Cities.  What else would you like to know?";
+var locationOverview = "Rock Island is a great city and hosts many great rap bands, mainly Town Business with their hit song A Nite In Rock Island. With an estimated 38,210 residents as of 2016, Rock Island is not the largest city in the Quad Cities.";
+
+var whatElse = "What else would you like to know?"
 
 var HelpMessage = "Here are some things you  can say: Give me an attraction. Tell me about " + location + ". Tell me the top five things to do. Tell me the local news.  What would you like to do?";
 
@@ -106,7 +108,7 @@ var newSessionHandlers = {
 var startSearchHandlers = Alexa.CreateStateHandler(states.SEARCHMODE, {
     'getOverview': function () {
         output = locationOverview;
-        this.emit(':askWithCard', output, output, locationOverview);
+        this.emit(':askWithCard', output, whatElse, locationOverview);
     },
     'getAttractionIntent': function () {
         var cardTitle = location;
